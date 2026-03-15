@@ -11,7 +11,7 @@ const CATEGORY_ICONS = {
 const STATUS_COLORS = { planned: '#f97316', visited: '#22c55e', skipped: '#6b7280' };
 
 export default function Roadmap({ onEditStop }) {
-  const { stops, loading } = useStops();
+  const { stops = [], loading } = useStops();  // ✅ default to []
   const [selectedStop, setSelectedStop] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
 
@@ -29,7 +29,6 @@ export default function Roadmap({ onEditStop }) {
 
   return (
     <div className="roadmap-container">
-      {/* Stats Bar */}
       <div className="stats-bar">
         <div className="stat">
           <span className="stat-num">{stops.length}</span>
@@ -44,12 +43,11 @@ export default function Roadmap({ onEditStop }) {
           <span className="stat-label">Remaining</span>
         </div>
         <div className="stat">
-          <span className="stat-num">{stops.reduce((a, s) => a + s.images.length, 0)}</span>
+          <span className="stat-num">{stops.reduce((a, s) => a + (s.images?.length || 0), 0)}</span>  {/* ✅ safe access */}
           <span className="stat-label">Photos</span>
         </div>
       </div>
 
-      {/* Filter Tabs */}
       <div className="filter-tabs">
         {['all', 'planned', 'visited', 'skipped'].map(f => (
           <button
