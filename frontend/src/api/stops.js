@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const api = axios.create({ baseURL: '/api' });
+const BASE = process.env.REACT_APP_API_URL
+  ? `${process.env.REACT_APP_API_URL}/api`
+  : '/api';
+
+const api = axios.create({ baseURL: BASE });
 
 export const stopsApi = {
   getAll: () => api.get('/stops'),
